@@ -25,21 +25,6 @@ public class Centro {
 		valorInternacion=valor;
 	}
 	
-	public double getSaldo(int hc){
-		Iterator<Integer> it= pacientes.keySet().iterator();
-			while(it.hasNext()){
-				if(pacientes.get(it.next()).equals(hc)){
-					return pacientes.get(it).getDeuda();
-				}	
-			}
-			return 0;
-	}
-
-	/*
-	public void pagarSaldo(int hc){
-		
-	}
-	*/
 	public boolean agregarEspecialidad(String nombre, double valorConsulta){
 		Especialidad esp= new Especialidad(nombre,valorConsulta);
 		if(!especialidades.contains(esp)){
@@ -51,7 +36,6 @@ public class Centro {
 	}
 	
 	public boolean agregarMedico(String nombre, int matricula, String especialidad, double valorTratamiento){
-		
 		Medico med=new Medico( nombre ,matricula , especialidad ,valorTratamiento);
 		if(!medicos.contains(med)){
 			return medicos.add(med);
@@ -73,10 +57,18 @@ public class Centro {
 		
 		
 	}
-	/*
+	
 	public boolean agregarPacienteObraSocial(String nombre, int hc, Fecha nac, String ObraSocial, double porcentaje ){
-		
-	}*/
+		PacienteObraSocial p = new PacienteObraSocial(nombre, hc, nac, ObraSocial, porcentaje);
+		if(!pacientes.containsKey(hc)) {
+			pacientes.put(hc, p);
+			return true;
+		}
+		else {
+			return false;
+		}	
+	}
+	
 	public boolean agregarPacienteAmbulatorio(String nombre, int hc, Fecha nac){
 		PacienteAmbulatorio p= new PacienteAmbulatorio(nombre,hc,nac);
 		if(!pacientes.containsKey(hc)){
@@ -87,6 +79,23 @@ public class Centro {
 			return false;
 		}
 	}
+	
+	public double getSaldo(int hc){
+		Iterator<Integer> it= pacientes.keySet().iterator();
+			while(it.hasNext()){
+				if(pacientes.get(it.next()).equals(hc)){
+					return pacientes.get(it).getDeuda();
+				}	
+			}
+			return 0;
+	}
+	
+	/*
+	public void pagarSaldo(int hc){
+
+		
+	}
+	*/
 /*
 	public ArrayList<Atencion> atencionesEnConsultorio(int hc){
 		
