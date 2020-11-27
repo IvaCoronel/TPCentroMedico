@@ -133,6 +133,7 @@ public class Centro {
 		}
 	}
 	
+	//Falta test
 	void altaInternacion(int hc, Fecha fechaAlta) {
 		if(pacientes.get(hc)!=null) {
 			if(pacientes.get(hc) instanceof PacienteObraSocial) {
