@@ -12,5 +12,29 @@ public class PacienteObraSocial extends Paciente {
 		this.porcentaje = porcentaje;
 		
 	}
+
+	public String getObraSocial() {
+		return obraSocial;
+	}
+
+	public void setObraSocial(String obraSocial) {
+		this.obraSocial = obraSocial;
+	}
+
+	public int getCantInternaciones() {
+		return cantInternaciones;
+	}
+
+	public void setCantInternaciones(int cantInternaciones) {
+		this.cantInternaciones = cantInternaciones;
+	}
+
+	public double getPorcentaje() {
+		return porcentaje;
+	}
+
+	public void setPorcentaje(double porcentaje) {
+		this.porcentaje = porcentaje;
+	}
 	
 }

@@ -8,8 +8,6 @@ public class Consultorio extends Atencion {
 		this.matricula = matricula;
 		
 	}
-
-	
 	public Integer getMatricula() {
 		return matricula;
 	}

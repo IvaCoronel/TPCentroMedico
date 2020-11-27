@@ -1,4 +1,4 @@
-import java.util.HashSet;
+
 
 public class PacienteAmbulatorio extends Paciente {
 	
@@ -7,10 +7,6 @@ public class PacienteAmbulatorio extends Paciente {
 		
 	}
 
-	public boolean registrarTratamiento(Medico medico,String tratamiento){
-		Tratamiento t= new Tratamiento(medico,tratamiento);
-		return super.atenciones.add(t);
-	}
 	
 	
 } 

@@ -12,6 +12,47 @@ public class Medico {
 		this.especialidad = especialidad;
 		this.valorHonorarios = valorHonorarios;
 	}
+	
+
+	public String getNombre() {
+		return nombre;
+	}
+
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+
+	public int getMatricula() {
+		return matricula;
+	}
+
+
+	public void setMatricula(int matricula) {
+		this.matricula = matricula;
+	}
+
+
+	public String getEspecialidad() {
+		return especialidad;
+	}
+
+
+	public void setEspecialidad(String especialidad) {
+		this.especialidad = especialidad;
+	}
+
+
+	public double getValorHonorarios() {
+		return valorHonorarios;
+	}
+
+
+	public void setValorHonorarios(double valorHonorarios) {
+		this.valorHonorarios = valorHonorarios;
+	}
+
 
 	@Override
 	public int hashCode() {

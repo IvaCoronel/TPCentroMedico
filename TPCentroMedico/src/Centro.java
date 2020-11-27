@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -10,7 +9,7 @@ public class Centro {
 	private String CUIT;
 	protected HashMap<Integer, Paciente> pacientes;
 	protected HashSet<Especialidad> especialidades;
-	protected HashSet<Medico> medicos;
+	protected HashMap<Integer,Medico> medicos;
 	private double valorInternacion;
 	private ArrayList<Integer> PacientesInternados;
 	
@@ -20,10 +19,15 @@ public class Centro {
 		valorInternacion=valorInt;
 		pacientes= new HashMap<Integer,Paciente>();
 		especialidades = new HashSet<Especialidad>();
-		medicos = new HashSet<Medico>();
+		medicos = new HashMap<Integer,Medico>();
 		PacientesInternados = new ArrayList<Integer>();
 		
 	}
+	
+	/*El código debe tener implementado el método toString del Centro, y los que sean
+	necesarios.
+
+	*/
 	
 	public void cambiarValorInternacion(double valor){
 		valorInternacion=valor;
@@ -41,8 +45,9 @@ public class Centro {
 	
 	public boolean agregarMedico(String nombre, int matricula, String especialidad, double valorTratamiento){
 		Medico med=new Medico( nombre ,matricula , especialidad ,valorTratamiento);
-		if(!medicos.contains(med)){
-			return medicos.add(med);
+		if(medicos.get(matricula)==null){
+			medicos.put(matricula, med);
+			return true;
 		}
 		else{
 			return false;
@@ -50,23 +55,22 @@ public class Centro {
 	}	
 	
 	public boolean agregarPacientePrivado(String nombre, int hc, Fecha nac){
-		PacientePrivado p= new PacientePrivado(nombre,hc,nac);
-			
-		if(!pacientes.containsKey(hc)){
-			pacientes.put(hc, p);
+		PacientePrivado privado= new PacientePrivado(nombre,hc,nac);	
+		Paciente p = pacientes.get(hc);
+		if(p==null){
+			pacientes.put(hc, privado);
 			return true;
 		}
 		else{
 			return false;
-		}
-		
-		
+		}	
 	}
 	
 	public boolean agregarPacienteObraSocial(String nombre, int hc, Fecha nac, String ObraSocial, double porcentaje ){
-		PacienteObraSocial p = new PacienteObraSocial(nombre, hc, nac, ObraSocial, porcentaje);
-		if(!pacientes.containsKey(hc)) {
-			pacientes.put(hc, p);
+		PacienteObraSocial pOSocial = new PacienteObraSocial(nombre, hc, nac, ObraSocial, porcentaje);
+		Paciente p=pacientes.get(hc);
+		if(p==null) {
+			pacientes.put(hc, pOSocial);
 			return true;
 		}
 		else {
@@ -75,9 +79,10 @@ public class Centro {
 	}
 	
 	public boolean agregarPacienteAmbulatorio(String nombre, int hc, Fecha nac){
-		PacienteAmbulatorio p= new PacienteAmbulatorio(nombre,hc,nac);
-		if(!pacientes.containsKey(hc)){
-			pacientes.put(hc, p);
+		PacienteAmbulatorio pA= new PacienteAmbulatorio(nombre,hc,nac);
+		Paciente p = pacientes.get(hc);
+		if(p==null){
+			pacientes.put(hc, pA);
 			return true;
 		}
 		else{
@@ -87,8 +92,9 @@ public class Centro {
 	
 	//Falta el test
 	public double getSaldo(int hc){ 
-		if(pacientes.containsKey(hc)) {
-			return pacientes.get(hc).getDeuda();
+		Paciente p= pacientes.get(hc);
+		if(p!=null) {
+			return p.getDeuda();
 		}
 		else {
 			throw new RuntimeException("Paciente invalido");
@@ -97,8 +103,12 @@ public class Centro {
 	
 	//Falta el test
 	public void pagarSaldo(int hc){
-		if(pacientes.containsKey(hc)) {
-			pacientes.get(hc).setDeuda(0);
+		Paciente p= pacientes.get(hc);
+		if(p!=null) {
+			p.setDeuda(0);
+			for(Atencion a:p.atenciones){
+				a.setPagado(true);
+			}
 		}
 		else {
 			throw new RuntimeException("Paciente invalido");
@@ -106,11 +116,13 @@ public class Centro {
 	}
 	
 	//Falta el test
+	
 	void agregarAtencion(int hc, Fecha fecha, int matricula) {
 		Consultorio c=new Consultorio(matricula, fecha);
-		if(pacientes.containsKey(hc)) {
-			if(pacientes.get(hc) instanceof PacientePrivado) {
-				pacientes.get(hc).atenciones.add(c);
+		Paciente p = pacientes.get(hc);
+		if(p!=null) {
+			if(p instanceof PacientePrivado) {
+				p.atenciones.add(c);
 			}
 			else {
 				throw new RuntimeException("No es paciente Privado");
@@ -124,9 +136,10 @@ public class Centro {
 	//Falta el test
 	void agregarAtencion(int hc, Fecha fecha) {
 		Guardia g=new Guardia(fecha);
-		if(pacientes.containsKey(hc)) {
-			if(pacientes.get(hc) instanceof PacientePrivado) {
-				pacientes.get(hc).atenciones.add(g);
+		Paciente p = pacientes.get(hc);
+		if(p!=null) {
+			if(p instanceof PacientePrivado) {
+				p.atenciones.add(g);
 			}
 			else {
 				throw new RuntimeException("No es paciente Privado");
@@ -140,9 +153,10 @@ public class Centro {
 	//Falta el test
 	void agregarInternacion(int hc, String area, Fecha fingreso) {
 		Internacion i = new Internacion(area,fingreso);
-		if(pacientes.containsKey(hc)) {
-			if(pacientes.get(hc) instanceof PacienteObraSocial) {
-				pacientes.get(hc).atenciones.add(i);
+		Paciente p = pacientes.get(hc);
+		if(p!=null) {
+			if(p instanceof PacienteObraSocial) {
+				p.atenciones.add(i);
 				PacientesInternados.add(hc);
 			}
 			else {
@@ -153,46 +167,82 @@ public class Centro {
 			throw new RuntimeException("Paciente invalido");
 		}
 	}
-	
+	//falta calcular el costo de deuda
+	/*Un paciente solo puede tener una internación al mismo tiempo, y se agrega el costo de
+	internación al paciente solo cuando se le da el alta. */
 	
 	void altaInternacion(int hc, Fecha fechaAlta) {
-		if(pacientes.containsKey(hc)) {
-			if(pacientes.get(hc) instanceof PacienteObraSocial) {
-				
-				Internacion i = (Internacion)pacientes.get(hc).atenciones.get(pacientes.get(hc).atenciones.size()-1);
+		Paciente p= pacientes.get(hc);
+		if(p!=null) {
+			if(p instanceof PacienteObraSocial) {
+				Internacion i = (Internacion)p.atenciones.get(p.atenciones.size()-1);
 				if(fechaAlta.DespuesDe(i.getFecha())) {
 					i.setFechaAlta(fechaAlta);
 					PacientesInternados.remove((Integer)hc);
+					i.setMonto(costoInternacion(i.getFecha(), ((PacienteObraSocial) p).getPorcentaje())); // pasamos fecha de ingreso y porcentaje OSocial.
 				}
 				else {
 					throw new RuntimeException("La fecha de ingreso es mas reciente que la de alta");
 				}	
-			}
-			else {
-				throw new RuntimeException("No es paciente de Obra social");
 			}
 		}
 		else {
 			throw new RuntimeException("Paciente invalido");
 		}
 	}
+	private double costoInternacion(Fecha f, double p){
+			Integer dias= Fecha.cantDias(f);
+			double total= dias*valorInternacion;
+			double porcentaje= p * 100;
+			return (total*porcentaje)/100;	
+	}
+	
 	
 	//hice el test de este
 	public List<Integer> listaInternacion() {
 		return PacientesInternados;
-		
 	}
-/*	
-	Map<Fecha, String> atencionesEnConsultorio(int hC){
-		
-	}
-
 	
-	public void agregarTratamiento(int s, int a, String area){
+	//FALTA TEST
+	public Map<Fecha, String> atencionesEnConsultorio(int hc){
+		HashMap<Fecha,String> atenConsultorio= new HashMap<Fecha,String>();
+		Paciente p = pacientes.get(hc);
+		if(p!=null && p instanceof PacientePrivado){
+			for(Atencion a: p.atenciones){
+				if(a instanceof Consultorio){
+					String especialidad=obtenerEspecialidad(((Consultorio) a).getMatricula());
+					atenConsultorio.put(a.getFecha(), especialidad );	
+					System.out.println(atenConsultorio);
+				}
+			}
+			System.out.println(atenConsultorio);
+			return atenConsultorio;
+		}
+		else{
+			throw new RuntimeException("El paciente es inválido o no es de tipo Privado");
+		}
 		
 	}
+	 private String obtenerEspecialidad(Integer matricula){
+		 Medico m= medicos.get(matricula);
+		 return m.getEspecialidad();
+	 }
 
-
+	// falta test
+	public void agregarTratamiento(int hc, int matricula, String area){
+		Tratamiento t=new Tratamiento(hc,matricula,area);
+		Paciente p = pacientes.get(hc);
+		if(p!=null && p instanceof PacienteAmbulatorio) {
+				p.atenciones.add(t);
+		}
+		else {
+			throw new RuntimeException("El paciente es inválido o no es de tipo Privado");
+		}
+	}
+	//Faltan test, falta equals fecha. falta ver lo del pago de los 3.
+	// To string clinica (atencion,paciente,medico,especialidad)
+	//String builder
+/*
 public static void main(String[] args) {
 	Centro centro=new Centro("Centro Medico Dolores Fuentes","30-36542563-0",3000);
 	centro.agregarEspecialidad("Pediatria",2000);
@@ -205,7 +255,6 @@ public static void main(String[] args) {
 	centro.agregarPacienteObraSocial("Carlos", 222, new Fecha(15,1,1940), "Pami",0.3);
 	centro.agregarPacienteAmbulatorio("Pedro", 333, new Fecha(28,2,1970));
 	centro.agregarPacienteObraSocial("Jose", 444, new Fecha(15,1,1940), "Ospe",0.2);
-	/*
 	centro.agregarAtencion(111, new Fecha(25,10,2020));
 	centro.agregarAtencion(111, Fecha.hoy(), 55555);
 	System.out.println("Lista de internacion:" + centro.listaInternacion());
@@ -237,8 +286,8 @@ public static void main(String[] args) {
 	System.out.println("Atenciones paciente 111:");
 	System.out.println(centro.atencionesEnConsultorio(111));
 	}
-
-	*/
-
+*/
 	
-}
+
+}	
+

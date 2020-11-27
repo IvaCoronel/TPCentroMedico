@@ -1,12 +1,14 @@
 
 public class Tratamiento extends Atencion{
-	private Medico medico;
-	private String tratamiento;
+	private Integer hc;
+	private Integer matricula;
+	private String area;
 	
-	public Tratamiento(Medico medico,String tratamiento) {
+	public Tratamiento(Integer hc,Integer matricula, String area) {
 		super();
-		this.medico= medico;
-		this.tratamiento=tratamiento;
-	}	
+		this.hc=hc;
+		this.matricula=matricula;
+		this.area=area;
+	}
 }
  
