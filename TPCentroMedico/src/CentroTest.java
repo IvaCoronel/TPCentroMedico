@@ -12,44 +12,53 @@ public class CentroTest {
 	@Before
 	public void setUp(){
 		centro=new Centro("Centro Medico Dolores Fuentes","30-36542563-0",3000);
+			
+		centro.agregarPacientePrivado("Rosa Rios", 321, new Fecha(3,2,1971));
+		
+		centro.agregarPacienteAmbulatorio("Yoel Camino", 543, new Fecha(20,6,2015));
+		
+		centro.agregarPacienteObraSocial("Damian Moreno", 432, new Fecha(1,5,1963),"Osplad", 0.2);
 		
 	}
 
 	@Test
 	public void agregarEspecialidadtest() {
-		centro.agregarEspecialidad("Pediatria",2000);
-		centro.agregarEspecialidad("Cardiologia",3000);
-		centro.agregarEspecialidad("Traumatologia",2500);
-		centro.agregarEspecialidad("Pediatria",2000);
+		centro.agregarEspecialidad("Cardiologia", 2000);
+		centro.agregarEspecialidad("Dermatologia", 1500);
+		centro.agregarEspecialidad("Pediatria", 1200);
 		assertEquals(3,centro.especialidades.size());
 	}
 	@Test
 	public void agregarMedicoTest() {
-		centro.agregarMedico("Dr Perez", 55555, "Pediatria", 5000);
-		centro.agregarMedico("Dr Rodriguez", 66666, "Cardiologia", 8000);
-		centro.agregarMedico("Dr Curetta", 77777, "Traumatologia", 2000);
-		centro.agregarMedico("Dr Rodriguez", 66666, "Cardiologia", 8000);
+		centro.agregarMedico("Rene Vena", 12345, "Cardiologia", 20000);
+		centro.agregarMedico("Susana Cortez", 34567, "Dermatologia", 15000);
+		centro.agregarMedico("Mario Piazza", 56789, "Pediatria", 12000);
 		assertEquals(3, centro.medicos.size());
 	}
 	@Test
 	public void agregarPacientePrivadoTest() {
-		centro.agregarPacientePrivado("Juan", 111, new Fecha(20,11,1980));
-		centro.agregarPacientePrivado("Juan", 111, new Fecha(20,11,1980));
-		assertEquals(1, centro.pacientes.size());	
+		assertEquals(3, centro.pacientes.size());	
 	}
 	@Test
 	public void agregarPacienteAmbulatorioTest() {
-		centro.agregarPacienteAmbulatorio("Pedro", 333, new Fecha(28,2,1970));
-		centro.agregarPacienteAmbulatorio("Andres", 456, new Fecha(26,8,2000));
-		centro.agregarPacientePrivado("Juan", 111, new Fecha(20,11,1980));
 		assertEquals(3, centro.pacientes.size());
 	}
 	@Test
 	public void agregarPacienteObraSociaTest() {
-		centro.agregarPacienteObraSocial("Carlos", 222, new Fecha(15,1,1940), "Pami",0.3);
-		centro.agregarPacienteObraSocial("Carlos", 222, new Fecha(15,1,1940), "Pami",0.3);
-		centro.agregarPacienteObraSocial("Marisol", 252, new Fecha(15,1,1940), "Pami",0.3);
-		assertEquals(2,centro.pacientes.size());
+		assertEquals(3,centro.pacientes.size());
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

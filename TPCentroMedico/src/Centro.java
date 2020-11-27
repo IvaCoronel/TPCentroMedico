@@ -80,22 +80,73 @@ public class Centro {
 		}
 	}
 	
-	public double getSaldo(int hc){
-		Iterator<Integer> it= pacientes.keySet().iterator();
-			while(it.hasNext()){
-				if(pacientes.get(it.next()).equals(hc)){
-					return pacientes.get(it).getDeuda();
-				}	
-			}
-			return 0;
+	//Falta el test
+	public double getSaldo(int hc){ 
+		if(pacientes.get(hc)!=null) {
+			return pacientes.get(hc).getDeuda();
+		}
+		else {
+			throw new RuntimeException("Paciente invalido");
+		}
 	}
 	
-	/*
+	//Falta el test
 	public void pagarSaldo(int hc){
-
-		
+		if(pacientes.get(hc)!=null) {
+			pacientes.get(hc).setDeuda(0);
+		}
+		else {
+			throw new RuntimeException("Paciente invalido");
+		}
 	}
-	*/
+	
+	//Falta el test
+	void agregarAtencion(int hc, Fecha fecha, int matricula) {
+		Consultorio c=new Consultorio(matricula, fecha);
+		if(pacientes.get(hc)!=null) {
+			pacientes.get(hc).atenciones.add(c);
+		}
+		else {
+			throw new RuntimeException("Paciente invalido");
+		}
+	}
+
+	//Falta el test
+	void agregarAtencion(int hc, Fecha fecha) {
+		Guardia g=new Guardia(fecha);
+		if(pacientes.get(hc)!=null) {
+			pacientes.get(hc).atenciones.add(g);
+		}
+		else {
+			throw new RuntimeException("Paciente invalido");
+		}
+	}
+	
+	//Falta el test
+	void agregarInternacion(int hc, String area, Fecha fingreso) {
+		Internacion i = new Internacion(area,fingreso);
+		if(pacientes.get(hc)!=null) {
+			pacientes.get(hc).atenciones.add(i);
+		}
+		else {
+			throw new RuntimeException("Paciente invalido");
+		}
+	}
+	
+	void altaInternacion(int hc, Fecha fechaAlta) {
+		if(pacientes.get(hc)!=null) {
+			if(pacientes.get(hc) instanceof PacienteObraSocial) {
+				Internacion i = (Internacion)pacientes.get(hc).atenciones.get(pacientes.size()-1);
+				i.setFechaAlta(fechaAlta);
+			}
+			else {
+				throw new RuntimeException("No es paciente de Obra social");
+			}
+		}
+		else {
+			throw new RuntimeException("Paciente invalido");
+		}
+	}
 /*
 	public ArrayList<Atencion> atencionesEnConsultorio(int hc){
 		

@@ -1,14 +1,30 @@
 
 public class Internacion extends Atencion {
 	private String area;
-	private int habitacion;
 	private Fecha fechaAlta;
+	private Fecha fechaIngreso;
 	
-	public Internacion(String area, int habitacion, Fecha fechaAlta) {
+	public Internacion(String area,  Fecha fechaIngreso) {
 		super();
 		this.area = area;
-		this.habitacion = habitacion;
+		this.fechaIngreso=fechaIngreso;
+	}
+
+	public String getArea() {
+		return area;
+	}
+
+	public Fecha getFechaAlta() {
+		return fechaAlta;
+	}
+
+	public void setFechaAlta(Fecha fechaAlta) {
 		this.fechaAlta = fechaAlta;
 	}
+
+	public Fecha getFechaIngreso() {
+		return fechaIngreso;
+	}
+
 	
 }
