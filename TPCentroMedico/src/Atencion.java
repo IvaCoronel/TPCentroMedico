@@ -9,7 +9,7 @@ public abstract class Atencion {
 		this.pagado = pagado;
 		this.monto = monto;
 	}
-	gf
+	
 	
 	
 	
