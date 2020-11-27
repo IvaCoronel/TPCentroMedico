@@ -93,4 +93,12 @@ public class Medico {
 		return true;
 	}
 
+
+	@Override
+	public String toString() {
+		return "Medico [nombre=" + nombre + ", matricula=" + matricula + ", especialidad=" + especialidad
+				+ ", valorHonorarios=" + valorHonorarios + "]";
+	}
+	
+
 }

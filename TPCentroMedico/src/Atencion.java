@@ -34,12 +34,10 @@ public abstract class Atencion {
 	public void setMonto(double monto) {
 		this.monto = monto;
 	}
-	
-	
-	
-	
-	
-	
-	
+	@Override
+	public String toString() {
+		return "Atencion [fecha=" + fecha + ", pagado=" + pagado + ", monto=" + monto + "]";
+	}
+
 
 }

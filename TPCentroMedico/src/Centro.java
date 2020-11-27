@@ -24,11 +24,20 @@ public class Centro {
 		
 	}
 	
+	
 	/*El código debe tener implementado el método toString del Centro, y los que sean
 	necesarios.
 
 	*/
 	
+	@Override
+	public String toString() {
+		return "Centro [nombre=" + nombre + ", CUIT=" + CUIT + ", pacientes=" + pacientes + ", especialidades="
+				+ especialidades + ", medicos=" + medicos + ", valorInternacion=" + valorInternacion
+				+ ", PacientesInternados=" + PacientesInternados + "]";
+	}
+
+
 	public void cambiarValorInternacion(double valor){
 		valorInternacion=valor;
 	}
@@ -120,16 +129,18 @@ public class Centro {
 	void agregarAtencion(int hc, Fecha fecha, int matricula) {
 		Consultorio c=new Consultorio(matricula, fecha);
 		Paciente p = pacientes.get(hc);
-		if(p!=null) {
-			if(p instanceof PacientePrivado) {
-				p.atenciones.add(c);
-			}
-			else {
-				throw new RuntimeException("No es paciente Privado");
-			}
+		if(p!=null && p instanceof PacientePrivado) {
+			p.atenciones.add(c);
+			String especialidad=obtenerEspecialidad(matricula);
+			for(Especialidad e:especialidades){
+				if(especialidad.equals(e.getNombre())){
+					c.setMonto(e.getValorConsulta());
+					p.setDeuda(p.getDeuda()+ e.getValorConsulta());
+				}
+			}			
 		}
 		else {
-			throw new RuntimeException("Paciente invalido");
+			throw new RuntimeException("El paciente es inválido o no es de tipo Privado");
 		}
 	}
 
@@ -147,6 +158,20 @@ public class Centro {
 		}
 		else {
 			throw new RuntimeException("Paciente invalido");
+		}
+	}
+	
+	public void agregarTratamiento(int hc, int matricula, String area){
+		Tratamiento t=new Tratamiento(hc,matricula,area);
+		Paciente p = pacientes.get(hc);
+		if(p!=null && p instanceof PacienteAmbulatorio) {
+				p.atenciones.add(t);
+				double costo=(medicos.get(matricula).getValorHonorarios());
+				t.setMonto(costo);
+				p.setDeuda(p.getDeuda()+ costo);
+		}
+		else {
+			throw new RuntimeException("El paciente es inválido o no es de tipo Privado");
 		}
 	}
 	
@@ -179,7 +204,9 @@ public class Centro {
 				if(fechaAlta.DespuesDe(i.getFecha())) {
 					i.setFechaAlta(fechaAlta);
 					PacientesInternados.remove((Integer)hc);
-					i.setMonto(costoInternacion(i.getFecha(), ((PacienteObraSocial) p).getPorcentaje())); // pasamos fecha de ingreso y porcentaje OSocial.
+					double costo= costoInternacion(i.getFecha(), fechaAlta, ((PacienteObraSocial) p).getPorcentaje());
+					i.setMonto(costo); // pasamos fecha de ingreso y porcentaje OSocial.
+					p.setDeuda(p.getDeuda() + costo );
 				}
 				else {
 					throw new RuntimeException("La fecha de ingreso es mas reciente que la de alta");
@@ -190,11 +217,11 @@ public class Centro {
 			throw new RuntimeException("Paciente invalido");
 		}
 	}
-	private double costoInternacion(Fecha f, double p){
-			Integer dias= Fecha.cantDias(f);
+	private double costoInternacion(Fecha ingreso, Fecha alta, double p){
+			Integer dias= Fecha.cantDias(ingreso,alta);
+			System.out.println("cant dias " + dias);
 			double total= dias*valorInternacion;
-			double porcentaje= p * 100;
-			return (total*porcentaje)/100;	
+			return total*p;
 	}
 	
 	
@@ -212,6 +239,7 @@ public class Centro {
 				if(a instanceof Consultorio){
 					String especialidad=obtenerEspecialidad(((Consultorio) a).getMatricula());
 					atenConsultorio.put(a.getFecha(), especialidad );	
+					System.out.println(a.getFecha());
 					System.out.println(atenConsultorio);
 				}
 			}
@@ -229,17 +257,8 @@ public class Centro {
 	 }
 
 	// falta test
-	public void agregarTratamiento(int hc, int matricula, String area){
-		Tratamiento t=new Tratamiento(hc,matricula,area);
-		Paciente p = pacientes.get(hc);
-		if(p!=null && p instanceof PacienteAmbulatorio) {
-				p.atenciones.add(t);
-		}
-		else {
-			throw new RuntimeException("El paciente es inválido o no es de tipo Privado");
-		}
-	}
-	//Faltan test, falta equals fecha. falta ver lo del pago de los 3.
+	
+	//Faltan test, 
 	// To string clinica (atencion,paciente,medico,especialidad)
 	//String builder
 /*

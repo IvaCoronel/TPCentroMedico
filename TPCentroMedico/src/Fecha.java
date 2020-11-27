@@ -15,10 +15,18 @@ public class Fecha {
 	public  boolean DespuesDe(Fecha fecha1) {
 		return this.fecha.isAfter(fecha1.fecha);
 	}
-	public static int cantDias(Fecha fecha1){
-		long cantDias= DAYS.between(fecha1.fecha,hoy().fecha);
+	public static int cantDias(Fecha fecha1, Fecha fecha2){
+		long cantDias= DAYS.between(fecha1.fecha,fecha2.fecha);
 		return (int) cantDias;
+		
 	}
+
+	@Override
+	public String toString() {
+		return "[" + fecha + "]";
+	}
+
+
 
 
 	
