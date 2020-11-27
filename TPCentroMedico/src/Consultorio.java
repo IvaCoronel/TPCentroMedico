@@ -14,5 +14,11 @@ public class Consultorio extends Atencion {
 	public void setMatricula(Integer matricula) {
 		this.matricula = matricula;
 	}
-
+	@Override
+	public String toString() {
+		String s= super.toString();
+		
+		return  "Consultorio [" + s + " matricula=" + matricula + "]";
+	}
+	
 }

@@ -62,7 +62,7 @@ public class CentroTestObligatorio {
 			ctro.pagarSaldo(321);
 			assertEquals(ctro.getSaldo(321),0,1);
 		}
-/*
+
 		@Test
 		public void testSaldoPacienteOSocial() {
 			System.out.println(ctro.getSaldo(432));
@@ -70,7 +70,7 @@ public class CentroTestObligatorio {
 			ctro.pagarSaldo(432);
 			assertEquals(ctro.getSaldo(432),0,1);
 		}
-*
+
 		@Test
 		public void testSaldoPacienteAmbulatorio() {
 			System.out.println(ctro.getSaldo(543));
@@ -105,5 +105,5 @@ public class CentroTestObligatorio {
 			assertFalse(inter.contains(654));
 		}
 
-	*/
+	
 }

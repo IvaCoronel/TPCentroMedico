@@ -1,18 +1,18 @@
 
 public class Guardia extends Atencion {
-	private Fecha fecha;
-	
+
 	public Guardia(Fecha fecha) {
 		super(fecha);
 		
 	}
 
-	public Fecha getFecha() {
-		return fecha;
+	
+
+	
+	@Override
+	public String toString() {
+		String s= super.toString();
+		return  "Guardia ["+ s +  "]";
 	}
 
-	public void setFecha(Fecha fecha) {
-		this.fecha = fecha;
-	}
-	
 }

@@ -36,8 +36,9 @@ public abstract class Atencion {
 	}
 	@Override
 	public String toString() {
-		return "Atencion [fecha=" + fecha + ", pagado=" + pagado + ", monto=" + monto + "]";
+		return "fecha=" + fecha + ", pagado=" + pagado + ", monto=" + monto+ "," ;
 	}
+	
 
 
 }

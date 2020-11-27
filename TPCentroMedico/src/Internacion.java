@@ -21,6 +21,12 @@ public class Internacion extends Atencion {
 	public void setFechaAlta(Fecha fechaalta) {
 		this.fechaAlta = fechaalta;
 	}
+
+	@Override
+	public String toString() {
+		String s= super.toString();
+		return  "Internacion [" + s +"area=" + area + ", fechaAlta=" + fechaAlta + "]";
+	}
 	
 	
 	

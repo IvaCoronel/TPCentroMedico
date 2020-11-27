@@ -10,5 +10,13 @@ public class Tratamiento extends Atencion{
 		this.matricula=matricula;
 		this.area=area;
 	}
+
+	@Override
+	public String toString() {
+		String m= Double.toString(super.getMonto());
+		String p= Boolean.toString(super.isPagado());
+		return "Tratamiento [monto="+ m + ", pagado="+ p + ", hc=" + hc + ", matricula=" + matricula + ", area=" + area + "]";
+	}
+	
 }
  

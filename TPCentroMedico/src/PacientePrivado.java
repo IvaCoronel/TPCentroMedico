@@ -1,4 +1,4 @@
-import java.util.HashSet;
+
 
 public class PacientePrivado extends Paciente {
 

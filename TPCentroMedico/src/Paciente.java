@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-import java.util.HashSet;
+
 
 public abstract class Paciente {
 	private String nombre;
