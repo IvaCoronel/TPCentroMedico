@@ -2,12 +2,12 @@
 public class Internacion extends Atencion {
 	private String area;
 	private Fecha fechaAlta;
-	private Fecha fechaIngreso;
+	
 	
 	public Internacion(String area,  Fecha fechaIngreso) {
-		super();
+		super(fechaIngreso);
 		this.area = area;
-		this.fechaIngreso=fechaIngreso;
+		
 	}
 
 	public String getArea() {
@@ -18,13 +18,11 @@ public class Internacion extends Atencion {
 		return fechaAlta;
 	}
 
-	public void setFechaAlta(Fecha fechaAlta) {
-		this.fechaAlta = fechaAlta;
+	public void setFechaAlta(Fecha fechaalta) {
+		this.fechaAlta = fechaalta;
 	}
-
-	public Fecha getFechaIngreso() {
-		return fechaIngreso;
-	}
-
+	
+	
+	
 	
 }

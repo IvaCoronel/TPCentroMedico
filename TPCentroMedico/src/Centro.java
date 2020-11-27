@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 public class Centro {
 	private String nombre;
@@ -10,14 +12,16 @@ public class Centro {
 	protected HashSet<Especialidad> especialidades;
 	protected HashSet<Medico> medicos;
 	private double valorInternacion;
+	private ArrayList<Integer> PacientesInternados;
 	
-	public Centro( String nombre,String string, double valorInt){
-		this.CUIT=string;
-		this.nombre= nombre;
-		this.valorInternacion=valorInt;
+	public Centro( String nomb,String string, double valorInt){
+		CUIT=string;
+		nombre= nomb;
+		valorInternacion=valorInt;
 		pacientes= new HashMap<Integer,Paciente>();
 		especialidades = new HashSet<Especialidad>();
 		medicos = new HashSet<Medico>();
+		PacientesInternados = new ArrayList<Integer>();
 		
 	}
 	
@@ -47,6 +51,7 @@ public class Centro {
 	
 	public boolean agregarPacientePrivado(String nombre, int hc, Fecha nac){
 		PacientePrivado p= new PacientePrivado(nombre,hc,nac);
+			
 		if(!pacientes.containsKey(hc)){
 			pacientes.put(hc, p);
 			return true;
@@ -82,7 +87,7 @@ public class Centro {
 	
 	//Falta el test
 	public double getSaldo(int hc){ 
-		if(pacientes.get(hc)!=null) {
+		if(pacientes.containsKey(hc)) {
 			return pacientes.get(hc).getDeuda();
 		}
 		else {
@@ -92,7 +97,7 @@ public class Centro {
 	
 	//Falta el test
 	public void pagarSaldo(int hc){
-		if(pacientes.get(hc)!=null) {
+		if(pacientes.containsKey(hc)) {
 			pacientes.get(hc).setDeuda(0);
 		}
 		else {
@@ -103,8 +108,13 @@ public class Centro {
 	//Falta el test
 	void agregarAtencion(int hc, Fecha fecha, int matricula) {
 		Consultorio c=new Consultorio(matricula, fecha);
-		if(pacientes.get(hc)!=null) {
-			pacientes.get(hc).atenciones.add(c);
+		if(pacientes.containsKey(hc)) {
+			if(pacientes.get(hc) instanceof PacientePrivado) {
+				pacientes.get(hc).atenciones.add(c);
+			}
+			else {
+				throw new RuntimeException("No es paciente Privado");
+			}
 		}
 		else {
 			throw new RuntimeException("Paciente invalido");
@@ -114,8 +124,13 @@ public class Centro {
 	//Falta el test
 	void agregarAtencion(int hc, Fecha fecha) {
 		Guardia g=new Guardia(fecha);
-		if(pacientes.get(hc)!=null) {
-			pacientes.get(hc).atenciones.add(g);
+		if(pacientes.containsKey(hc)) {
+			if(pacientes.get(hc) instanceof PacientePrivado) {
+				pacientes.get(hc).atenciones.add(g);
+			}
+			else {
+				throw new RuntimeException("No es paciente Privado");
+			}
 		}
 		else {
 			throw new RuntimeException("Paciente invalido");
@@ -125,20 +140,10 @@ public class Centro {
 	//Falta el test
 	void agregarInternacion(int hc, String area, Fecha fingreso) {
 		Internacion i = new Internacion(area,fingreso);
-		if(pacientes.get(hc)!=null) {
-			pacientes.get(hc).atenciones.add(i);
-		}
-		else {
-			throw new RuntimeException("Paciente invalido");
-		}
-	}
-	
-	//Falta test
-	void altaInternacion(int hc, Fecha fechaAlta) {
-		if(pacientes.get(hc)!=null) {
+		if(pacientes.containsKey(hc)) {
 			if(pacientes.get(hc) instanceof PacienteObraSocial) {
-				Internacion i = (Internacion)pacientes.get(hc).atenciones.get(pacientes.size()-1);
-				i.setFechaAlta(fechaAlta);
+				pacientes.get(hc).atenciones.add(i);
+				PacientesInternados.add(hc);
 			}
 			else {
 				throw new RuntimeException("No es paciente de Obra social");
@@ -148,22 +153,41 @@ public class Centro {
 			throw new RuntimeException("Paciente invalido");
 		}
 	}
-/*
-	public ArrayList<Atencion> atencionesEnConsultorio(int hc){
+	
+	
+	void altaInternacion(int hc, Fecha fechaAlta) {
+		if(pacientes.containsKey(hc)) {
+			if(pacientes.get(hc) instanceof PacienteObraSocial) {
+				
+				Internacion i = (Internacion)pacientes.get(hc).atenciones.get(pacientes.get(hc).atenciones.size()-1);
+				if(fechaAlta.DespuesDe(i.getFecha())) {
+					i.setFechaAlta(fechaAlta);
+					PacientesInternados.remove((Integer)hc);
+				}
+				else {
+					throw new RuntimeException("La fecha de ingreso es mas reciente que la de alta");
+				}	
+			}
+			else {
+				throw new RuntimeException("No es paciente de Obra social");
+			}
+		}
+		else {
+			throw new RuntimeException("Paciente invalido");
+		}
+	}
+	
+	//hice el test de este
+	public List<Integer> listaInternacion() {
+		return PacientesInternados;
 		
 	}
-	public ArrayList<Paciente> listaInternacion(){
+/*	
+	Map<Fecha, String> atencionesEnConsultorio(int hC){
 		
 	}
-	public void agregarAtencion(int m,Fecha f){
-		
-	}
-	public void agregarInternacion(int d, String area, Fecha f){
-		
-	}
-	public void altaInternacion(int j,Fecha f){
-		
-	}
+
+	
 	public void agregarTratamiento(int s, int a, String area){
 		
 	}
@@ -215,4 +239,6 @@ public static void main(String[] args) {
 	}
 
 	*/
+
+	
 }

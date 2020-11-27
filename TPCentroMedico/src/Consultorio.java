@@ -4,9 +4,9 @@ public class Consultorio extends Atencion {
 	private Fecha fecha;
 	
 	public Consultorio(Integer matricula, Fecha fecha) {
-		super();
+		super(fecha);
 		this.matricula = matricula;
-		this.fecha = fecha;
+		
 	}
 
 	

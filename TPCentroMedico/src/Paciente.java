@@ -35,17 +35,18 @@ public abstract class Paciente {
 	public void setNac(Fecha nac) {
 		this.nac = nac;
 	}
-	public ArrayList<Atencion> getAtenciones() {
-		return atenciones;
-	}
-	public void setAtenciones(ArrayList<Atencion> atenciones) {
-		this.atenciones = atenciones;
-	}
+	
 	public double getDeuda() {
 		return deuda;
 	}
 	public void setDeuda(double deuda) {
 		this.deuda = deuda;
+	}
+
+	@Override
+	public String toString() {
+		return "Paciente [nombre=" + nombre + ", historiaClinica=" + historiaClinica + ", nac=" + nac + ", atenciones="
+				+ atenciones + ", deuda=" + deuda + "]";
 	}
 	
 	

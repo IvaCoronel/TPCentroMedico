@@ -3,8 +3,8 @@ public class Guardia extends Atencion {
 	private Fecha fecha;
 	
 	public Guardia(Fecha fecha) {
-		super();
-		this.fecha=fecha;
+		super(fecha);
+		
 	}
 
 	public Fecha getFecha() {
