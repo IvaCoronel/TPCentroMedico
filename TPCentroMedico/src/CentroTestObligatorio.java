@@ -49,23 +49,19 @@ public class CentroTestObligatorio {
 			
 			// tratamiento: nro hc, matricula del medico, descripcion del tratamiento
 			ctro.agregarTratamiento(543, 56789, "Inmunoterapia");
-			ctro.agregarTratamiento(543, 34567, "Terapia antihistaminica");
-			System.out.println(ctro);
+			ctro.agregarTratamiento(543, 34567, "Terapia antihistaminica");	
+			
 		}
 
 		@Test
 		public void testSaldoPacientePrivado() {
-		
-			
 			assertEquals(ctro.getSaldo(321),5000,10);
-			
 			ctro.pagarSaldo(321);
 			assertEquals(ctro.getSaldo(321),0,1);
 		}
 
 		@Test
 		public void testSaldoPacienteOSocial() {
-			System.out.println(ctro.getSaldo(432));
 			assertEquals(ctro.getSaldo(432),13000,20);
 			ctro.pagarSaldo(432);
 			assertEquals(ctro.getSaldo(432),0,1);
@@ -73,7 +69,6 @@ public class CentroTestObligatorio {
 
 		@Test
 		public void testSaldoPacienteAmbulatorio() {
-			System.out.println(ctro.getSaldo(543));
 			assertEquals(ctro.getSaldo(543),2700,10);
 			ctro.pagarSaldo(543);
 			assertEquals(ctro.getSaldo(543),0,1);
@@ -83,8 +78,6 @@ public class CentroTestObligatorio {
 		public void testAtencionesEnConsultorio() {
 			//nro hc 321. Sus atenciones
 			Map<Fecha,String> aten = ctro.atencionesEnConsultorio(321);
-			System.out.println(aten.size());
-			System.out.println(new Fecha(11,10,2020));
 			assertTrue(aten.values().contains("Dermatologia"));
 			assertTrue(aten.values().contains("Cardiologia"));
 		}

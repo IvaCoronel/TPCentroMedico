@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -16,9 +17,10 @@ public class Centro {
 	 * 
 	 * para todo paciente "p" en pacientes.values(), p.historiaClinica es igual a pacientes.key
 	 * matricula y medico.
-	 * internados esta en pacientes
+	 * internados estan en pacientes
 	 * internados.size == sum(pacientes.values().filter(internados).size) ...
 	 * un medico tiene que tener una especialidad existente en especialidades y una especialidad estar asignada a un medico.
+	 * Agregar una Atencion en Consultorio o un Tratamiento debe tener un Medico existente en medicos.
 	 *
 	 */
 	public Centro( String nomb,String string, double valorInt){
@@ -55,7 +57,7 @@ public class Centro {
 		}
 		sb.append("Pacientes Internados: ").append("\n");
 		for(Integer i: pacientesInternados){
-			sb.append(i.toString()).append("\n");
+			sb.append(pacientes.get(i).toString()).append("\n");
 		}
 	
 		return sb.toString();
@@ -106,8 +108,7 @@ public class Centro {
 			pacientes.put(hc, pA);
 		}
 	}
-	
-	//Falta el test
+		
 	public double getSaldo(int hc){ 
 		Paciente p = obtenerPaciente(hc);
 		if(p!=null) {
@@ -118,7 +119,6 @@ public class Centro {
 		}
 	}
 	
-	//Falta el test
 	public void pagarSaldo(int hc){
 		Paciente p = obtenerPaciente(hc);
 		if(p!=null) {
@@ -132,9 +132,7 @@ public class Centro {
 		}
 	}
 	
-	//Falta el test
-	
-	void agregarAtencion(int hc, Fecha fecha, int matricula) {
+	public void agregarAtencion(int hc, Fecha fecha, int matricula) {
 		Consultorio c=new Consultorio(matricula, fecha);
 		Paciente p = obtenerPaciente(hc);
 		if(p!=null && p instanceof PacientePrivado) {
@@ -147,8 +145,7 @@ public class Centro {
 			throw new RuntimeException("El paciente es inválido o no es de tipo Privado");
 		}
 	}
-
-	//Falta el test
+	
 	public void agregarAtencion(int hc, Fecha fecha) {
 		Guardia g=new Guardia(fecha);
 		Paciente p = obtenerPaciente(hc);
@@ -174,7 +171,6 @@ public class Centro {
 		}
 	}
 	
-	//Falta el test
 	public void agregarInternacion(int hc, String area, Fecha fingreso) {
 		Internacion i = new Internacion(area,fingreso);
 		Paciente p = obtenerPaciente(hc);
@@ -187,7 +183,6 @@ public class Centro {
 		}
 	}
 
-	
 	public void altaInternacion(int hc, Fecha fechaAlta) {
 		Paciente p = obtenerPaciente(hc);
 		if(p!=null && p instanceof PacienteObraSocial) {
@@ -207,6 +202,7 @@ public class Centro {
 			throw new RuntimeException("Paciente invalido");
 		}
 	}
+	
 	private double costoInternacion(Fecha ingreso, Fecha alta, double p){
 			Integer dias= Fecha.cantDias(ingreso,alta);
 			return (dias*valorInternacion)*p;
@@ -216,15 +212,16 @@ public class Centro {
 		return pacientesInternados;
 	}
 	
-	//FALTA TEST
 	public Map<Fecha, String> atencionesEnConsultorio(int hc){
 		HashMap<Fecha,String> atenConsultorio= new HashMap<Fecha,String>();
 		Paciente p = obtenerPaciente(hc);
 		if(p!=null && p instanceof PacientePrivado){
-			for(Atencion a: p.atenciones){
-				if(a instanceof Consultorio){
+			Iterator<Atencion> it =p.atenciones.iterator();
+			while(it.hasNext()) {
+				Atencion a = it.next();
+				if(a instanceof Consultorio) {
 					String especialidad=obtenerEspecialidad(((Consultorio) a).getMatricula());
-					atenConsultorio.put(a.getFecha(), especialidad );	
+					atenConsultorio.put(a.getFecha(), especialidad );
 				}
 			}
 			return atenConsultorio;
@@ -235,56 +232,10 @@ public class Centro {
 		
 	}
 	
-	 private String obtenerEspecialidad(Integer matricula){
+	private String obtenerEspecialidad(Integer matricula){
 		 Medico m= medicos.get(matricula);
 		 return m.getEspecialidad();
 	 }
-
-public static void main(String[] args) {
-	Centro centro=new Centro("Centro Medico Dolores Fuentes","30-36542563-0",3000);
-	centro.agregarEspecialidad("Pediatria",2000);
-	centro.agregarEspecialidad("Cardiologia",3000);
-	centro.agregarEspecialidad("Traumatologia",2500);
-	centro.agregarMedico("Dr Perez", 55555, "Pediatria", 5000);
-	centro.agregarMedico("Dr Rodriguez", 66666, "Cardiologia", 8000);
-	centro.agregarMedico("Dr Curetta", 77777, "Traumatologia", 2000);
-	centro.agregarPacientePrivado("Juan", 111, new Fecha(20,11,1980));
-	centro.agregarPacienteObraSocial("Carlos", 222, new Fecha(15,1,1940), "Pami",0.3);
-	centro.agregarPacienteAmbulatorio("Pedro", 333, new Fecha(28,2,1970));
-	centro.agregarPacienteObraSocial("Jose", 444, new Fecha(15,1,1940), "Ospe",0.2);
-	centro.agregarAtencion(111, new Fecha(25,10,2020));
-	centro.agregarAtencion(111, Fecha.hoy(), 55555);
-	System.out.println("Lista de internacion:" + centro.listaInternacion());
-	System.out.println("\nSe agrega una internacion...\n");
-	centro.agregarInternacion(222,"Cardiologia",new Fecha(20,10,2020));
-	System.out.println("Lista de internacion:" + centro.listaInternacion());
-	System.out.println("\nSe da de alta la internacion...\n");
-	centro.altaInternacion(222, new Fecha(14,11,2020));
-	System.out.println("Lista de internacion:" + centro.listaInternacion());
-	System.out.println("\nSe agregan dos nuevas internaciones...\n");
-	centro.agregarInternacion(222,"General",new Fecha(16,11,2020));
-	centro.agregarInternacion(444,"Pediatria",new Fecha(17,11,2020));
-	System.out.println("Lista de internacion:" + centro.listaInternacion());
-	centro.agregarTratamiento(333, 66666, "Angioplastia");
-	System.out.println("\n\n" + centro.toString());
-	System.out.println("Deuda paciente HC 111: " + centro.getSaldo(111));
-	System.out.println("Deuda paciente HC 222: " + centro.getSaldo(222));
-	System.out.println("Deuda paciente HC 333: " + centro.getSaldo(333));
-	System.out.println("\nSaldando deudas...\n");
-	centro.pagarSaldo(111);
-	centro.pagarSaldo(333);
-	centro.pagarSaldo(222);
-	System.out.println("Deuda paciente HC 111: " + centro.getSaldo(111));
-	System.out.println("Deuda paciente HC 222: " + centro.getSaldo(222));
-	System.out.println("Deuda paciente HC 333: " + centro.getSaldo(333));
-	System.out.println("\n\n"+centro.toString());
-	System.out.println("\nAgrego nueva atencion paciente 111...\n");
-	centro.agregarAtencion(111, new Fecha(18,11,2020),77777);
-	System.out.println("Atenciones paciente 111:");
-	System.out.println(centro.atencionesEnConsultorio(111));
-	}
-
-	
 
 }	
 
