@@ -10,7 +10,6 @@ public class CentroTest {
 	@Before
 	public void setUp(){
 		centro=new Centro("Centro Medico Dolores Fuentes","30-36542563-0",3000);
-		System.out.println(centro);
 	}
 
 	@Test
