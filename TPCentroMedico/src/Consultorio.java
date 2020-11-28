@@ -20,5 +20,7 @@ public class Consultorio extends Atencion {
 		
 		return  "Consultorio [" + s + " matricula=" + matricula + "]";
 	}
+
+
 	
 }
