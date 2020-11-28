@@ -13,6 +13,7 @@ public class Centro {
 	private double valorInternacion;
 	private ArrayList<Integer> pacientesInternados;
 	
+	
 	/*IREP 
 	 * 
 	 * para todo paciente "p" en pacientes.values(), p.historiaClinica es igual a pacientes.key
