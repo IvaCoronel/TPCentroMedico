@@ -3,8 +3,8 @@ import static java.time.temporal.ChronoUnit.DAYS;
 public class Fecha {
 	private LocalDate fecha;
 	
-	public Fecha(int dia, int mes, int aÃ±o) {
-		fecha =  LocalDate.of(aÃ±o, mes, dia);
+	public Fecha(int dia, int mes, int año) {
+		fecha =  LocalDate.of(año, mes, dia);
 		
 	}
 	

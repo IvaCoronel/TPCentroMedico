@@ -95,13 +95,8 @@ public class CentroTest {
 		assertEquals(2,centro.atencionesEnConsultorio(321).size());
 		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		
 }
+
+	
+	

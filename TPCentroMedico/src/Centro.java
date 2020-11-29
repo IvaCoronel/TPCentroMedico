@@ -178,15 +178,37 @@ public class Centro {
 		Internacion i = new Internacion(area,fingreso);
 		Paciente p = obtenerPaciente(hc);
 		if(p!=null && p instanceof PacienteObraSocial && !(pacientesInternados.contains(hc))){
+			if(p.atenciones.size()>=1) {
+				if(chequearFecha(p.atenciones,fingreso)) {
+					p.atenciones.add(i);
+					pacientesInternados.add(hc);
+				}
+				else {
+					throw new RuntimeException("El paciente es inválido o no tiene obra social");
+				}
+			}
+			else {
 				p.atenciones.add(i);
 				pacientesInternados.add(hc);
+			}
 		}
 		else {
 			throw new RuntimeException("El paciente es inválido o no tiene obra social");
 		}
 	}
 
-	public void altaInternacion(int hc, Fecha fechaAlta) {
+	private boolean chequearFecha(List<Atencion> atenciones, Fecha fIngreso) {
+		Internacion ultimaInternacion = (Internacion) atenciones.get(atenciones.size()-1);
+		if(ultimaInternacion.getFechaAlta()!=null && fIngreso.DespuesDe(ultimaInternacion.getFechaAlta())) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+					
+ 	public void altaInternacion(int hc, Fecha fechaAlta) {
 		Paciente p = obtenerPaciente(hc);
 		if(p!=null && p instanceof PacienteObraSocial) {
 			Internacion i = (Internacion)p.atenciones.get(p.atenciones.size()-1);
