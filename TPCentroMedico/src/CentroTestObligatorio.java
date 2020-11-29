@@ -85,7 +85,6 @@ public class CentroTestObligatorio {
 		@Test
 		public void testListaInternacion() { 
 			ctro.agregarInternacion(432, "Cardiologia", new Fecha(15,11,2020));
-
 			ctro.agregarPacienteObraSocial("Yamila Choque", 654, new Fecha(20,6,2013),"Ospe", 0.3);
 			ctro.agregarInternacion(654, "Pediatria", new Fecha(20,11,2020));
 			ctro.altaInternacion(654, Fecha.hoy());

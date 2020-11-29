@@ -29,6 +29,7 @@ public class CentroTest {
 		//INTERNACION
 		centro.agregarInternacion(432, "Cardiologia", new Fecha(15,11,2020));
 		centro.agregarInternacion(654, "Pediatria", new Fecha(20,11,2020));
+		
 		centro.agregarInternacion(765, "Cardiologia", new Fecha(21,11,2013));
 		//ALTA
 		centro.altaInternacion(654,new Fecha(12,12,2020));
@@ -81,7 +82,7 @@ public class CentroTest {
 	}
 	
 	@Test
-	public void agregarInternaciontTest() {
+	public void listaInternaciontTest() {
 		assertEquals(1,centro.listaInternacion().size());
 	}
 	@Test
